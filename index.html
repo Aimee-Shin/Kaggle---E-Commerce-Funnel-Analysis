@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이커머스 퍼널 분석 포트폴리오</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: #f1f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        ul.insights-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul.insights-list li {
+            background: #e8f4fc;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-left: 5px solid var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .funnel-stage {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #eee;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        .funnel-bar {
+            height: 100%;
+            background: var(--accent-color);
+            opacity: 0.8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+
+        <header>
+            <h1>eCommerce Funnel Analysis Portfolio</h1>
+            <p>데이터 기반의 의사결정을 위한 고객 행동 및 전환율 분석</p>
+            <div style="text-align: center; margin-top: 10px; color: #555; font-size: 0.9em;">
+                <strong>신예원</strong> | 2026.02 | 개인프로젝트
+            </div>
+        </header>
+
+        <!-- Table of Contents -->
+        <div class="card" style="margin-bottom: 30px; background-color: #f8f9fa;">
+            <h3 style="margin-top: 0; font-size: 1.1em; color: #333;">목차 (Table of Contents)</h3>
+            <ul style="margin-bottom: 0; padding-left: 20px;">
+                <li><a href="#section1" style="color: #2980b9; text-decoration: none;">1. 문제 정의 및 데이터 개요 (Problem
+                        Definition & Overview)</a></li>
+                <li><a href="#section2" style="color: #2980b9; text-decoration: none;">2. DAU 트렌드 분석 (DAU Trends
+                        Analysis)</a></li>
+                <li><a href="#section3" style="color: #2980b9; text-decoration: none;">3. 전환 퍼널 분석 (Conversion Funnel
+                        Analysis)</a></li>
+                <li><a href="#section4" style="color: #2980b9; text-decoration: none;">4. 결론 및 제언 (Summary &
+                        Recommendations)</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. Problem Definition & Overview -->
+        <div id="section1" class="card">
+            <h2>1. 문제 정의 및 데이터 개요 (Problem Definition & Overview)</h2>
+            <p>
+                이커머스 플랫폼의 지속적인 성장을 위해서는 사용자가 언제 가장 활발하게 활동하는지 파악하고,
+                구매 여정(Customer Journey)의 어느 단계에서 이탈이 발생하는지 이해하는 것이 필수적입니다.
+            </p>
+            <p>
+                본 분석은 다음과 같은 핵심 질문에 답하고자 합니다:
+            </p>
+            <ul>
+                <li>사용자 트래픽이 가장 몰리는 요일과 시간대는 언제인가?</li>
+                <li>상품 조회에서 구매까지 이어지는 전환 과정 중, 가장 큰 이탈이 발생하는 구간은 어디인가?</li>
+                <li>데이터 기반으로 구매 전환율을 높이기 위해 어떤 전략을 실행해야 하는가?</li>
+            </ul>
+        </div>
+
+        <!-- Overview -->
+        <div class="card">
+            <h2>분석 개요 (Overview)</h2>
+            <p>
+                본 포트폴리오는 2019년 11월의 이커머스 로그 데이터를 기반으로 사용자 행동을 분석한 결과입니다.
+                <strong>DAU(일간 활성 사용자)</strong> 트렌드를 통해 마케팅 골든타임을 도출하고,
+                <strong>전환 퍼널(Conversion Funnel)</strong> 분석을 통해 구매 전환의 병목 구간을 진단하였습니다.
+            </p>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 15px;">
+                <p style="margin: 0 0 10px 0;">
+                    <strong>데이터 샘플링:</strong> 원본 데이터는 약 6,750만 행(67,501,979)의 대용량 데이터셋입니다.
+                    효율적인 분석을 위해 <strong>20만 개의 고유 세션(user_session)</strong>을 무작위로 추출하여 분석을 진행했습니다.
+                </p>
+                <div
+                    style="background-color: #272822; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em;">
+                    <pre style="margin: 0;"><code># Load Data: Extract unique user_session randomly
+sessions = pd.read_csv('2019-Nov.csv', usecols=['user_session']).dropna()
+unique_sessions = sessions['user_session'].unique()
+
+sample_size = 200000
+sampled_sessions = np.random.choice(unique_sessions, size=sample_size, replace=False)</code></pre>
+                </div>
+            </div>
+            <p style="margin-top: 15px;">
+                이를 통해 실제 비즈니스에 적용 가능한 구체적인 액션 아이템을 제안합니다.
+            </p>
+        </div>
+
+        <!-- Feature Engineering & Data Definition -->
+        <div class="card">
+            <h2>데이터 정의 및 전처리 (Data Definition & Feature Engineering)</h2>
+            <p>분석에 사용된 주요 변수와 파생 변수의 정의는 다음과 같습니다.</p>
+
+            <h3 style="margin-top: 20px; font-size: 1.1em; color: #444;">1. 변수 정의 (Variable Definitions)</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr style="background-color: #f1f8ff;">
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">변수명</th>
+                    <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">설명</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>event_time</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">이벤트가 발생한 시간 (UTC 기준)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>event_type</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">이벤트 유형 (view, cart, purchase 등)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>user_id</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">사용자 고유 식별자</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>user_session</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">사용자 세션 ID (로그인 ~ 로그아웃 또는 일정 시간 동안의 활동 단위)</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 20px; font-size: 1.1em; color: #444;">2. 파생 변수 생성 (Feature Engineering)</h3>
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">원본 데이터에서 날짜 및 시간 정보를 추출하여 분석에 필요한 파생 변수를
+                생성했습니다.</p>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background-color: #f1f8ff;">
+                    <th style="width: 20%; border: 1px solid #ddd; padding: 10px; text-align: left;">파생 변수명</th>
+                    <th style="width: 40%; border: 1px solid #ddd; padding: 10px; text-align: left;">설명</th>
+                    <th style="width: 40%; border: 1px solid #ddd; padding: 10px; text-align: left;">Python Code
+                        (Pandas)</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>date_ymd</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">이벤트 발생 날짜 (YYYY-MM-DD)</td>
+                    <td
+                        style="border: 1px solid #ddd; padding: 10px; font-family: monospace; font-size: 0.85em; background: #f8f9fa;">
+                        df['date_ymd'] = df['event_time'].dt.date</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>day_of_week</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">요일 (Monday, Tuesday...)</td>
+                    <td
+                        style="border: 1px solid #ddd; padding: 10px; font-family: monospace; font-size: 0.85em; background: #f8f9fa;">
+                        df['day_of_week'] = df['event_time'].dt.day_name()</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>day_of_week1</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">요일 인덱스 (0:Mon, ..., 6:Sun)</td>
+                    <td
+                        style="border: 1px solid #ddd; padding: 10px; font-family: monospace; font-size: 0.85em; background: #f8f9fa;">
+                        df['day_of_week1'] = df['event_time'].dt.dayofweek</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>hour</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">이벤트 발생 시간 (0~23)</td>
+                    <td
+                        style="border: 1px solid #ddd; padding: 10px; font-family: monospace; font-size: 0.85em; background: #f8f9fa;">
+                        df['hour'] = df['event_time'].dt.hour</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>hour_group</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">시간대 그룹핑 (Morning, Afternoon, Evening, Night)</td>
+                    <td
+                        style="border: 1px solid #ddd; padding: 10px; font-family: monospace; font-size: 0.85em; background: #f8f9fa;">
+                        # Example Logic<br>
+                        if 6 <= hour < 12: 'Morning' <br>
+                            elif 12 <= hour < 18: 'Afternoon' ... </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 2. DAU Trends Analysis -->
+        <div id="section2" class="card">
+            <h2>2. DAU 트렌드 분석 (DAU Trends Analysis)</h2>
+            <p>요일별, 시간대별 DAU(Daily Active Users) 분석을 통해 사용자의 방문 패턴을 파악했습니다.</p>
+
+            <div class="chart-container" style="height: 350px;">
+                <canvas id="dauDayChart"></canvas>
+            </div>
+            <p style="margin: 10px 0 30px 0; font-size: 0.9em; text-align: center; color: #666;">
+                ▲ 요일별 DAU 트렌드: 토요일이 가장 높고, 금요일과 일요일이 뒤를 잇습니다.
+            </p>
+
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h3 style="color: #444; font-size: 1.1em; margin-bottom: 15px;">시간대별 활동 히트맵 (DAU Trends by Hour of Day)
+                </h3>
+                <img src="dau trends by hour of day heatmap.png" alt="DAU Trends by Hour of Day Heatmap"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div
+                    style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: left;">
+                    <p style="margin-bottom: 10px;">
+                        이 히트맵은 요일별 시간대별 사용자 활동을 시각화한 것입니다.
+                    </p>
+                    <ul style="margin: 0; padding-left: 20px; color: #555;">
+                        <li style="margin-bottom: 5px;"><strong>평일:</strong> 주로 오후 시간대(14:00~17:00)에 활동이 집중되며, 그 외 시간에는
+                            상대적으로 활동량이 적습니다.</li>
+                        <li style="margin-bottom: 5px;"><strong>주말(금~일):</strong> 4시 부터 17시까지 활동이 활발하게 이어집니다.</li>
+                        <li><strong>토요일 특이점:</strong> 다양한 시간대에 걸쳐 활동이 가장 활발하며, 특히 <strong>6시~14시</strong> 사이 이른
+                            시간대에 피크를 기록했습니다.</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-weight: bold; color: #2980b9;">
+                        💡 인사이트: 주중과 주말의 시간대별 특성에 맞춘 차별화된 프로모션 전략이 효과적일 것입니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="dauHourChart"></canvas>
+            </div>
+            <p style="margin-top: 20px; color: #555; line-height: 1.6;">
+                다음 막대 그래프는 일별 시간대별 평균 DAU 비율을 나타냅니다. 사용자는 오전(6-12시)에 35.16%의 비율로 가장 활동적이며, 그 뒤를 이어 오후(12-18시)에 33.74%의
+                비율을 보입니다. 이러한 패턴은 주말에 활동하는 사용자가 비교적 많고, 이들 대부분이 오전과 오후에 방문하기 때문일 수 있습니다.
+            </p>
+        </div>
+
+        <!-- 3. Conversion Funnel Analysis -->
+        <div id="section3" class="card">
+            <h2>3. 전환 퍼널 분석 (Conversion Funnel Analysis)</h2>
+            <p>사용자의 구매 여정(View → Cart → Purchase)을 단계별로 분석하여 이탈이 발생하는 구간을 식별했습니다.</p>
+
+            <p
+                style="color: #e74c3c; font-style: italic; background-color: #fff5f5; padding: 10px; border-left: 4px solid #e74c3c; margin-bottom: 20px;">
+                본 분석은 사용자의 순차적 행동(조회 → 장바구니 → 구매)에만 초점을 맞추며, 조회 후 바로 구매한 사용자의 데이터는 포함하지 않습니다.
+            </p>
+
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="funnelChart"></canvas>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="color: #444; font-size: 1.1em; margin-bottom: 15px;">상세 퍼널 지표 (Detailed Funnel Metrics)</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.95em;">
+                    <thead style="background-color: #f1f2f6;">
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">단계 (Stage)</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">세션 수 (Sessions)</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">유지율 (Retention)</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">이탈율 (Drop-off)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">View (상품 조회)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">199,863</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">100.00%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">0.00%</td>
+                        </tr>
+                        <tr style="background-color: #fff9db;">
+                            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Cart (장바구니)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">25,037</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right; color: #d35400;">12.53%
+                            </td>
+                            <td
+                                style="padding: 10px; border: 1px solid #ddd; text-align: right; color: #c0392b; font-weight: bold;">
+                                87.47%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Purchase (구매 완료)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">11,179</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">44.65%</td>
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">55.35%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 20px; background-color: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <p style="margin-bottom: 10px;">
+                        위의 그래프에서 볼 수 있듯이, '조회(View)'에서 '장바구니(Cart)'로 넘어가는 단계에서 87.47%의 사용자가 이탈했습니다. 반면, '장바구니'에서
+                        '구매(Purchase)'로의 이탈률은 55.35%입니다.
+                    </p>
+                    <p>
+                        이는 일단 사용자가 상품을 장바구니에 담으면 구매로 이어질 가능성이 비교적 높다는 것을 시사합니다. 그러나 '장바구니' 단계로의 전환이 효과적으로 이루어지지 않고 있어,
+                        사용자가 상품을 장바구니에 담도록 유도하는 즉각적인 개선이 필요함을 나타냅니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Summary & Recommendations -->
+        <div id="section4" class="card">
+            <h2>4. 결론 및 제언 (Summary & Recommendations)</h2>
+
+            <div style="background-color: #e8f4fd; padding: 20px; border-radius: 8px; border-left: 5px solid #3498db;">
+                <h3 style="color: #2980b9; margin-bottom: 15px;">핵심 발견 (Key Findings)</h3>
+                <ul style="margin-bottom: 20px;">
+                    <li><strong>요일별 트렌드:</strong> 🥇 토요일(35k) > 🥈 금요일(33k) > 🥉 일요일(29k) 순으로 활동이 많습니다.</li>
+                    <li><strong>시간대별 트렌드:</strong> 🥇 오전(6-12시, 35.16%)과 🥈 오후(12-18시, 33.74%)에 활동이 집중됩니다. 특히 주말 오전
+                        6시~오후 2시에
+                        가장 활발합니다.</li>
+                    <li><strong>퍼널 이탈률:</strong> View → Cart 단계에서 <strong>87.47%</strong>의 가장 큰 이탈이 발생합니다.</li>
+                </ul>
+
+                <h3 style="color: #2980b9; margin-bottom: 15px;">전략적 제언 (Strategic Recommendations)</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>주말 오전 '반짝 세일' (Weekend Morning Rush):</strong> 사용자가 가장 활발한
+                        주말 오전 6시~오후 2시에 타임 세일이나 한정 수량 프로모션을 진행하여 구매 전환을 극대화합니다.</li>
+                    <li style="margin-bottom: 10px;"><strong>장바구니 담기 유도 (Push to Cart):</strong> 이탈률이 가장 높은 View → Cart
+                        단계를 개선하기 위해, 상세 페이지에 '장바구니 담기' 버튼의 시인성을 높이거나, '장바구니 담으면 3% 추가 할인'과 같은 즉각적인 혜택을 제공합니다.</li>
+                    <li style="margin-bottom: 10px;"><strong>사회적 증거 강화 (Social Proof):</strong> 신뢰도를 높여 구매를 유도하기 위해 인기
+                        리뷰나 평점을 상품 페이지 상단에 노출합니다.</li>
+                    <li style="margin-bottom: 10px;"><strong>배송 보장 메시지 (Delivery Assurance):</strong> "지금 주문하면 내일 도착"과
+                        같은 퀵커머스 메시지를 노출하여 구매 결정의 불확실성을 줄입니다.</li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. DAU by Day of Week Chart (Vertical Bar)
+        const ctxDauDay = document.getElementById('dauDayChart').getContext('2d');
+        new Chart(ctxDauDay, {
+            type: 'bar',
+            data: {
+                labels: ['월 (Mon)', '화 (Tue)', '수 (Wed)', '목 (Thu)', '금 (Fri)', '토 (Sat)', '일 (Sun)'],
+                datasets: [{
+                    label: 'DAU (명)',
+                    data: [24572, 23436, 23381, 25084, 33318, 35148, 29593],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.5)',
+                        'rgba(52, 152, 219, 0.5)',
+                        'rgba(52, 152, 219, 0.5)',
+                        'rgba(52, 152, 219, 0.5)',
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(52, 152, 219, 0.9)', // Highlight Sat
+                        'rgba(52, 152, 219, 0.7)'
+                    ],
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '요일별 DAU 트렌드' }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false, // Start from a reasonable base to show differences
+                        min: 20000
+                    }
+                }
+            }
+        });
+
+        // 2. Average DAU Ratio by Hour Chart (Horizontal Bar)
+        const ctxDauHour = document.getElementById('dauHourChart').getContext('2d');
+        new Chart(ctxDauHour, {
+            type: 'bar',
+            data: {
+                labels: ['저녁 (18-24)', '오후 (12-18)', '오전 (6-12)', '심야 (0-6)'],
+                datasets: [{
+                    label: '평균 DAU 비율 (%)',
+                    data: [6.43, 33.74, 35.16, 24.67],
+                    backgroundColor: [
+                        '#9b59b6', // Evening - Purple
+                        '#f39c12', // Afternoon - Orange
+                        '#f1c40f', // Morning - Yellow
+                        '#2c3e50'  // Night - Dark Blue
+                    ],
+                    borderColor: [
+                        '#8e44ad',
+                        '#e67e22',
+                        '#f39c12',
+                        '#2c3e50'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal Layout
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '시간대별 평균 DAU 비율 (Average DAU Ratio by Hour)' }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 40
+                    }
+                }
+            }
+        });
+
+        // 3. Funnel Chart (Horizontal Bar)
+        const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+        new Chart(ctxFunnel, {
+            type: 'bar',
+            data: {
+                labels: ['조회 (View)', '장바구니 (Cart)', '구매 (Purchase)'],
+                datasets: [{
+                    label: '고유 세션 수',
+                    data: [199863, 25037, 11179],
+                    backgroundColor: [
+                        '#3498db',
+                        '#e67e22',
+                        '#27ae60'
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y', // Horizontal bar chart to resemble a funnel
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '전환 퍼널 (세션 수)' }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
